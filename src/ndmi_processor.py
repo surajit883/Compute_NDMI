@@ -189,14 +189,16 @@ def fetch_cogs(main_dir , tdate, shp_file, cloud_cover='10', date_range_days=365
     s2sat_items = search_data(target_date, target_date)
     
     if not s2sat_items:
-        
+        print('data is not availble for ', tdate)        
+
         for i in range(1, 365):
             end_date = target_date - datetime.timedelta(days=i)
             s2sat_items = search_data(end_date, end_date)
-            
             if s2sat_items:
                 print('data is availble for ', end_date)
                 break
+            else:
+                print('data is not availble for ', end_date)
     
     if not s2sat_items:
         print(f"No data available for this location from last years to your given date ")
