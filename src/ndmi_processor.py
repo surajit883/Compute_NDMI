@@ -23,7 +23,6 @@ from rasterio.mask import mask
 
 def plot_ndmi(ndmi_array, mean_ndmi, date, output_png, shapefile_geom=None):
     plt.figure(figsize=(10, 8))
-    
     plt.imshow(ndmi_array, cmap='RdYlGn', vmin=-1, vmax=1)
     plt.colorbar(label='NDMI')
     
@@ -45,17 +44,12 @@ def plot_ndmi(ndmi_array, mean_ndmi, date, output_png, shapefile_geom=None):
     print(f"NDMI plot saved to {output_png}")
 
 def plot_ndmi_with_shapefile(ndmi_array, extent, mean_ndmi, shp, png_date, output_path):
-
     fig, ax = plt.subplots(figsize=(10, 10), facecolor='white')
-
     im = ax.imshow(ndmi_array, cmap='RdYlGn',  # Use the RdYlGn colormap
                    extent=extent,
                    vmin=-1, vmax=1)  # Adjust vmin and vmax according to your NDMI range
-
     shp.plot(ax=ax, facecolor='none', edgecolor='black', linewidth=1)
-
     plt.colorbar(mappable=im, orientation="vertical", fraction=0.03, pad=0.04)
-
     ax.set_title(f"Normalized Difference Moisture Index (NDMI) - {png_date}", ha='center', fontsize=16, fontweight='bold')
     ax.axis('off')
     
@@ -67,17 +61,12 @@ def plot_ndmi_with_shapefile(ndmi_array, extent, mean_ndmi, shp, png_date, outpu
 
     plt.subplots_adjust(bottom=0.1, right=0.8, top=0.9)
     fig.tight_layout()
-
     plt.savefig(output_path, format='png', dpi=300)
     plt.close()
 
     print(f"NDMI plot saved to {output_path}")
 
-
-
-
 def compute_ndmi(b8_path,b11_path,shp,png_date,output_path):
-    
     
     with rasterio.open(b8_path) as src_b8:
         b8 = src_b8.read(1)
@@ -86,19 +75,12 @@ def compute_ndmi(b8_path,b11_path,shp,png_date,output_path):
     with rasterio.open(b11_path) as src_b11:
         b11 = src_b11.read(1)
 
-    # Ensure both rasters have the same shape
     if b8.shape != b11.shape:
         raise ValueError("B8 and B11 bands do not have the same shape")
 
-    # Compute NDMI: (B8 - B11) / (B8 + B11)
-    # Add a small number to the denominator to avoid division by zero
     ndmi = (b8.astype(float) - b11.astype(float)) / (b8 + b11).astype(float)
-    # ndmi[np.isnan(ndmi)] = 0  # Replace NaNs with 0 if any
-
-    # Reproject the shapefile to match the CRS of the rasters
     shp = shp.to_crs(b8_meta['crs'].to_proj4())
 
-    # Create a temporary in-memory dataset for NDMI
     with rasterio.MemoryFile() as memfile:
         with memfile.open(
             driver='GTiff',
@@ -111,7 +93,6 @@ def compute_ndmi(b8_path,b11_path,shp,png_date,output_path):
         ) as dataset:
             dataset.write(ndmi, 1)  # Write the NDMI data to the first band
 
-            # Mask the dataset using the shapefile
             out_image, out_transform = mask(dataset, shapes=[mapping(geom) for geom in shp.geometry], crop=True)
             out_image[0][out_image[0] == 0] = np.nan
             mean_ndmi = np.nanmean(out_image[0])
@@ -124,16 +105,11 @@ def compute_ndmi(b8_path,b11_path,shp,png_date,output_path):
         out_transform[5]
     ]
 
-   
     plot_ndmi_with_shapefile(out_image[0], extent, mean_ndmi, shp, png_date, output_path)
 
-
 def check_ndmi(ndmi_files, output_dir, aoi_geom):
-
-
     b8a_path, b11_path = ndmi_files
     ndmi_date = os.path.basename(b8a_path).split('_')[2]
-
     ndmi_png = f'{output_dir}/{ndmi_date}.png'
     if os.path.exists(ndmi_png):
         print(f"NDMI file already exists: {ndmi_png}")
@@ -148,8 +124,6 @@ def create_dir(main_dir, _dir):
     return _dir
 
 def download_tiff_files(urls,date,_dir):
-
-
     files = []
     for url in urls:
         try:
@@ -184,7 +158,6 @@ def get_band_links(data_dict, bands, band_dict) -> list:
     return links
 
 def fetch_cogs(main_dir , tdate, shp_file, cloud_cover='10', date_range_days=365, tiff_dir = 'data', png_dir = 'output'):
-
     shapes = gpd.read_file(shp_file)
     geom = shapes.geometry[0]
     

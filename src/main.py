@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Main script to run NDMI computation and plotting based on configuration in config.py
+Created on Thu Aug  1 11:47:16 2024
+
+@author: Surajit Hazra
 """
 
 import subprocess
@@ -46,8 +48,6 @@ if config.INSTALLED_PACKAGES == False:
         update_config(config_path)
 
 def main():
-    
-    # Extract configurations from config.py
     shapefile_path = config.SHAPEFILE_PATH
     target_date = config.TARGET_DATE
     cloud_cover = config.CLOUD_COVER
@@ -56,7 +56,6 @@ def main():
     tiff_dir = config.TIFF_DIR
     Png_dir = config.PNG_DIR
 
-    # Fetch and process Sentinel-2 COGs
     fetch_cogs(main_dir, target_date, shapefile_path, cloud_cover, date_range_days)
 
 if __name__ == "__main__":
