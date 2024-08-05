@@ -66,8 +66,7 @@ def plot_ndmi_with_shapefile(ndmi_array, extent, mean_ndmi, shp, png_date, outpu
 
     print(f"NDMI plot saved to {output_path}")
 
-def compute_ndmi(b8_path,b11_path,shp,png_date,output_path):
-    
+def compute_ndmi(b8_path,b11_path,shp,png_date,output_path): 
     with rasterio.open(b8_path) as src_b8:
         b8 = src_b8.read(1)
         b8_meta = src_b8.meta
