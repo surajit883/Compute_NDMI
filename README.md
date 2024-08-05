@@ -39,7 +39,9 @@ Make sure you have the following software installed:
 
 2. **Install required Python packages:**
    ```
-   pip install -r requirements.txt
+   pip install -r requirements.txt  
+   or 
+   python src/main.py
    ```
 
 ## Configuration
