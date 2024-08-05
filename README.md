@@ -27,8 +27,6 @@ This project aims to compute the Normalized Difference Moisture Index (NDMI) fro
 Make sure you have the following software installed:
 - Python 3.7 or higher
 - pip (Python package installer)
-- GDAL
-
 ## Installation
 
 1. **Clone the repository:**
