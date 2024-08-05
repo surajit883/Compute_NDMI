@@ -8,7 +8,7 @@ TIFF_DIR = 'data' # download directory for tiff file
 PNG_DIR = 'output' # output directory for png data
 
 ### Date to fetch Sentinel-2 images
-TARGET_DATE = '2024-05-24' # date for downloading image
+TARGET_DATE = '2024-02-24' # date for downloading image
 
 ### Cloud cover threshold
 CLOUD_COVER = '10'

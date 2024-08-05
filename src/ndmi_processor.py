@@ -66,7 +66,8 @@ def plot_ndmi_with_shapefile(ndmi_array, extent, mean_ndmi, shp, png_date, outpu
 
     print(f"NDMI plot saved to {output_path}")
 
-def compute_ndmi(b8_path,b11_path,shp,png_date,output_path): 
+def compute_ndmi(b8_path,b11_path,shp,png_date,output_path):
+    
     with rasterio.open(b8_path) as src_b8:
         b8 = src_b8.read(1)
         b8_meta = src_b8.meta
@@ -215,13 +216,16 @@ def fetch_cogs(main_dir , tdate, shp_file, cloud_cover='10', date_range_days=365
 
 
 if __name__ == "__main__":
-    farm_polygon = '../shp/AOI.shp'
+    farm_polygon = '/home/surajit/d/PROJECTS/Compute_NDMI/shp/AOI.shp'
     gdf = gpd.read_file(farm_polygon)
     geom = gdf.geometry.iloc[0]
     geojson_dict = geom.__geo_interface__
 
     tdate = "2024-02-24"
-    
-    fetch_cogs(tdate, farm_polygon)
+    main_dir = '/home/surajit/d/PROJECTS/Compute_NDMI/'
+    CLOUD_COVER = '10'
+
+    DATE_RANGE_DAYS = 365
+    fetch_cogs(main_dir, tdate, farm_polygon, CLOUD_COVER, DATE_RANGE_DAYS)
 
     
